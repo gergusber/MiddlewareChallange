@@ -1,0 +1,27 @@
+{
+  "name": "middlewarechallange",
+  "version": "1.0.0",
+  "description": "Challange",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js",
+    "start-server": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gergusber/MiddlewareChallange.git"
+  },
+  "author": "German Bertea",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gergusber/MiddlewareChallange/issues"
+  },
+  "homepage": "https://github.com/gergusber/MiddlewareChallange#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
