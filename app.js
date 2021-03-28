@@ -1,5 +1,6 @@
 import express from "express";
-import router from "./routes/login.js";
+import routerlogin from "./routes/login.js";
+import routerClients from "./routes/client.js";
 import get404 from "./controllers/404.js";
 import dotenv from "dotenv";
 
@@ -10,11 +11,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 
-app.use("/login", router); //index//login
-
-//tutuca(lo otro)
+app.use("/api/v1/login", routerlogin);
+app.use("/api/v1/policies", routerClients);
 
 app.use(get404);
-// app.use("/", (req, res, next) => {}); //index
 
 app.listen(3000);

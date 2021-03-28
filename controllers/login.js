@@ -1,35 +1,26 @@
 import fetcher from "node-fetch";
-const catchError = (error) => {
-  console.log(error);
-};
+import moment from "moment";
 
 const postLogin = async (req, res, next) => {
-  console.log("PASO POR LOGING");
-  const body = {
-    client_id: process.env.USER,
-    client_secret: 2,
-  };
-
   const url = `${process.env.API_URL}/login`;
-  console.log(url);
   fetcher(url, {
     method: "POST",
-    body: JSON.stringify(body),
+    body: JSON.stringify(req.body),
     headers: { "Content-Type": "application/json" },
-  })
-    .then((res) => {
-      // if (res.statusCode != 200) {
-      //   {
-      //     throw new Error(res.statusCode);
-      //   }
-      // }
-      res.json();
-    })
-    .then((json) => console.log(json))
-    .catch((err) => {
-      console.log(err);
-    });
-  next();
+  }).then((response) => {
+    response
+      .json()
+      .then((x) => {
+        return {
+          token: x.token,
+          type: x.type,
+          expires_in: moment().add(1, "hour").valueOf(),
+        };
+      })
+      .then((r) => {
+        return res.status(200).json(r);
+      });
+  });
 };
 
 export { postLogin };
