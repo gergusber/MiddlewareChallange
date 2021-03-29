@@ -3,11 +3,9 @@ import moment from "moment";
 import jwt from "jwt-simple";
 
 const verifyToken = (req, res, next) => {
-  //   console.log("VERIFY TOKEN");
   const authHeader = req.headers["authorization"];
-  const token = authHeader.split(" ")[1]; //[1]TOKEN
+  const token = authHeader.split(" ")[1];
   var decoded = jwt.decode(token, `${process.env.SECRET}`);
-  //   console.log("DECODED DATA", decoded);
 
   if (decoded) {
     const currentTime = moment().valueOf();

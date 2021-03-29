@@ -1,9 +1,13 @@
 import express from "express";
-import { getClients, getClientsbyId } from "../controllers/client.js";
+import {
+  getClients,
+  getClientsbyId,
+  getClientsbyIdAndPolicies,
+} from "../controllers/client.js";
 
 const routerClients = express.Router();
-routerClients.get(":limit", getClients);
+routerClients.get("/:id/policies", getClientsbyIdAndPolicies);
 routerClients.get("/:id", getClientsbyId);
+routerClients.get(":limit", getClients);
 routerClients.get("/", getClients);
-
 export default routerClients;
