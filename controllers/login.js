@@ -28,7 +28,6 @@ const postLogin = async (req, res, next) => {
           },
           `${process.env.SECRET}`
         );
-        //
         return res.status(200).json({
           token: token,
           type: x.type,
@@ -41,30 +40,4 @@ const postLogin = async (req, res, next) => {
   });
 };
 
-// const renewTokenLogin = async (req, res, next) => {
-//   const url = `${process.env.API_URL}/login`;
-//   const body = {
-//     client_id: process.env.USER,
-//     client_secretass: process.env.PASS,
-//   };
-
-//   fetcher(url, {
-//     method: "POST",
-//     body: JSON.stringify(body),
-//     headers: { "Content-Type": "application/json" },
-//   }).then((response) => {
-//     response
-//       .json()
-//       .then((x) => {
-//         return {
-//           token: x.token,
-//           type: x.type,
-//           expires_in: moment().add(1, "hour").valueOf(),
-//         };
-//       })
-//       .then((r) => {
-//         return res.status(200).json(r);
-//       });
-//   });
-// };
 export { postLogin };
