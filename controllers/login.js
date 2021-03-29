@@ -1,5 +1,6 @@
 import fetcher from "node-fetch";
 import moment from "moment";
+import jwt from "jwt-simple";
 
 const postLogin = async (req, res, next) => {
   const url = `${process.env.API_URL}/login`;
@@ -11,16 +12,59 @@ const postLogin = async (req, res, next) => {
     response
       .json()
       .then((x) => {
-        return {
-          token: x.token,
+        if (x.statusCode) {
+          return res.status(x.statusCode).json({
+            statusCode: x.statusCode,
+            error: x.error,
+            message: x.message,
+          });
+        }
+
+        const token = jwt.encode(
+          {
+            token: x.token,
+            type: x.type,
+            expires_in: moment().add(1, "hour").valueOf(),
+          },
+          `${process.env.SECRET}`
+        );
+        //
+        return res.status(200).json({
+          token: token,
           type: x.type,
           expires_in: moment().add(1, "hour").valueOf(),
-        };
+        });
       })
-      .then((r) => {
-        return res.status(200).json(r);
+      .catch((r) => {
+        return res.status(500).json(r);
       });
   });
 };
 
+// const renewTokenLogin = async (req, res, next) => {
+//   const url = `${process.env.API_URL}/login`;
+//   const body = {
+//     client_id: process.env.USER,
+//     client_secretass: process.env.PASS,
+//   };
+
+//   fetcher(url, {
+//     method: "POST",
+//     body: JSON.stringify(body),
+//     headers: { "Content-Type": "application/json" },
+//   }).then((response) => {
+//     response
+//       .json()
+//       .then((x) => {
+//         return {
+//           token: x.token,
+//           type: x.type,
+//           expires_in: moment().add(1, "hour").valueOf(),
+//         };
+//       })
+//       .then((r) => {
+//         return res.status(200).json(r);
+//       });
+//   });
+// };
 export { postLogin };
