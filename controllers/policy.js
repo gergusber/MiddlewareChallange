@@ -10,7 +10,6 @@ const getPolicies = async (req, res, next) => {
     },
   })
     .then((response) => {
-      console.log(response.statusCode);
       if (!response.ok) {
         throw response;
       }
@@ -48,7 +47,6 @@ const getPolicybyId = async (req, res, next) => {
     },
   })
     .then((response) => {
-      console.log(response.ok);
       if (!response.ok) {
         throw response;
       }
