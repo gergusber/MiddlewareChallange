@@ -8,27 +8,33 @@ const getPolicies = async (req, res, next) => {
       "Content-Type": "application/json",
       authorization: req.headers["authorization"],
     },
-  }).then((response) => {
-    response
-      .json()
-      .then((x) => {
-        if (x.statusCode) {
-          return res.status(x.statusCode).json({
-            statusCode: x.statusCode,
-            error: x.error,
-            message: x.message,
-          });
-        }
-        if (req.query.limit > 0) {
-          return Array.from(x).slice(0, req.query.limit);
-        } else {
-          return Array.from(x).slice(0, 10);
-        }
-      })
-      .then((r) => {
-        return res.status(200).json(r);
+  })
+    .then((response) => {
+      console.log(response.statusCode);
+      if (!response.ok) {
+        throw response;
+      }
+      response
+        .json()
+        .then((x) => {
+          if (req.query.limit > 0) {
+            return Array.from(x).slice(0, req.query.limit);
+          } else {
+            return Array.from(x).slice(0, 10);
+          }
+        })
+        .then((r) => {
+          return res.status(200).json(r);
+        });
+    })
+    .catch((err) => {
+      err.json().then((errorMessage) => {
+        return res.status(errorMessage.statusCode).json({
+          code: errorMessage.statusCode,
+          message: errorMessage.message,
+        });
       });
-  });
+    });
 };
 
 const getPolicybyId = async (req, res, next) => {
@@ -40,16 +46,29 @@ const getPolicybyId = async (req, res, next) => {
       "Content-Type": "application/json",
       authorization: req.headers["authorization"],
     },
-  }).then((response) => {
-    response
-      .json()
-      .then((policies) => {
-        return Array.from(policies).filter((x) => x.id === id)[0];
-      })
-      .then((r) => {
-        return res.status(200).json(r);
+  })
+    .then((response) => {
+      console.log(response.ok);
+      if (!response.ok) {
+        throw response;
+      }
+      response
+        .json()
+        .then((policies) => {
+          return Array.from(policies).filter((x) => x.id === id)[0];
+        })
+        .then((r) => {
+          return res.status(200).json(r);
+        });
+    })
+    .catch((err) => {
+      err.json().then((errorMessage) => {
+        return res.status(errorMessage.statusCode).json({
+          code: errorMessage.statusCode,
+          message: errorMessage.message,
+        });
       });
-  });
+    });
 };
 
 export { getPolicies, getPolicybyId };
