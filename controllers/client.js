@@ -12,7 +12,13 @@ const getClients = async (req, res, next) => {
     response
       .json()
       .then((x) => {
-        console.log(req.query.limit);
+        if (x.statusCode) {
+          return res.status(x.statusCode).json({
+            statusCode: x.statusCode,
+            error: x.error,
+            message: x.message,
+          });
+        }
         if (req.query.limit > 0) {
           return Array.from(x).slice(0, req.query.limit);
         } else {
@@ -38,6 +44,13 @@ const getClientsbyId = async (req, res, next) => {
     response
       .json()
       .then((x) => {
+        if (x.statusCode) {
+          return res.status(x.statusCode).json({
+            statusCode: x.statusCode,
+            error: x.error,
+            message: x.message,
+          });
+        }
         return Array.from(x).filter((x) => x.id === id)[0];
       })
       .then((r) => {
@@ -48,7 +61,6 @@ const getClientsbyId = async (req, res, next) => {
 
 const getClientsbyIdAndPolicies = async (req, res, next) => {
   const id = req.params.id;
-  console.log("id", id);
   const headers = req.headers["authorization"];
   const url = `${process.env.API_URL}/policies`;
   fetcher(url, {
@@ -61,6 +73,13 @@ const getClientsbyIdAndPolicies = async (req, res, next) => {
     response
       .json()
       .then((x) => {
+        if (x.statusCode) {
+          return res.status(x.statusCode).json({
+            statusCode: x.statusCode,
+            error: x.error,
+            message: x.message,
+          });
+        }
         return Array.from(x).filter((x) => x.clientId === id);
       })
       .then((r) => {

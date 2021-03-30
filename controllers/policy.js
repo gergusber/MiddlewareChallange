@@ -12,7 +12,13 @@ const getPolicies = async (req, res, next) => {
     response
       .json()
       .then((x) => {
-        console.log(req.query.limit);
+        if (x.statusCode) {
+          return res.status(x.statusCode).json({
+            statusCode: x.statusCode,
+            error: x.error,
+            message: x.message,
+          });
+        }
         if (req.query.limit > 0) {
           return Array.from(x).slice(0, req.query.limit);
         } else {
@@ -37,8 +43,8 @@ const getPolicybyId = async (req, res, next) => {
   }).then((response) => {
     response
       .json()
-      .then((x) => {
-        return Array.from(x).filter((x) => x.id === id)[0];
+      .then((policies) => {
+        return Array.from(policies).filter((x) => x.id === id)[0];
       })
       .then((r) => {
         return res.status(200).json(r);
